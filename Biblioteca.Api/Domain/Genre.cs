@@ -7,6 +7,9 @@ namespace Biblioteca.Api.Domain
         [JsonPropertyName("id_genero")]
         public long ID { get; set; }
 
+        [JsonPropertyName("classificação")]
+        public string Classification { get; set; }
+
         [JsonPropertyName("description")]
         public string Description { get;set; }
 

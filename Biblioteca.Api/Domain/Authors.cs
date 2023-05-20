@@ -10,6 +10,12 @@ namespace Biblioteca.Api.Domain
         [JsonPropertyName("nome")]
         public string Name { get; set; }
 
+        [JsonPropertyName("bibliografia")]
+        public string Bibliography { get; set; }
+
+        [JsonPropertyName("nome_art")]
+        public string ArtisticName { get; set; }
+
         [JsonPropertyName("editora")]
         public string Publisher { get; set; }
 

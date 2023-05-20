@@ -34,8 +34,13 @@ namespace Biblioteca.Api.Handlers
         //Em processo
         public IActionResult Delete(long id)
         {
-            return new OkObjectResult(id);
+            Genre genre = genres.Where(X => X.ID == id).FirstOrDefault();
+            return new OkObjectResult($"O genero de id:{id} Foi deletado comsucesso!!");
         }
+
+        public IActionResult Put(string nome)
+        { return new ; }
+
         public IActionResult GetAll()
         {
             return new OkObjectResult(genres);

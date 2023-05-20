@@ -31,6 +31,16 @@ namespace Biblioteca.Api.Controllers
             return _handler.PostGenre(genre);
         }
 
+        [HttpDelete]
+        [Route("delete/{id}")]
+        public async Task<IActionResult> DeteleByID(long id)
+        {
+            return _handler.Delete(id);
+        }
+
+        [HttpPut]
+        [Route("pessoa/atualiza/{nome}")]
+
         [HttpGet]
         [Route("all_generos")]
         public async Task<IActionResult> GetAll()
