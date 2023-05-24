@@ -8,42 +8,42 @@ namespace Biblioteca.Api.Handlers
     {
 
         public static List<Genre> genres = new List<Genre>();
-         public IActionResult GetId(long id)
+         public Genre? GetID(long id)
          {
-
-            //   Genre genre = genres.Where(X => X.ID == id).FirstOrDefault();
-            //   return genre;
-            Genre genre = genres.Where(X => X.ID == id).FirstOrDefault();
-            if (genre == null)
-            {
-                return new NotFoundObjectResult("Este Genêro não existe!");
-            }
-            return new OkObjectResult(genre);
+            return genres.Where(X => X.ID == id).FirstOrDefault();
          }
-        public IActionResult PostGenre(Genre genre)
+        public bool PostGenre(Genre genre)
         {
             Genre conflict = genres.Where(X=>X.ID == genre.ID).FirstOrDefault();
+
             if (conflict !=null)
-            {
-                return new ConflictObjectResult("Este genêro já está cadastado!");
-            }
+                return false;
+            
             genres.Add(genre);
-            return new CreatedResult($"", "Genêro Cadastrado com sucesso!");
+            return true;
         }
 
         //Em processo
-        public IActionResult Delete(long id)
+        public bool DeleteByID(long id)
         {
-            Genre genre = genres.Where(X => X.ID == id).FirstOrDefault();
-            return new OkObjectResult($"O genero de id:{id} Foi deletado comsucesso!!");
+            return genres.RemoveAll(X => X.ID == id) > 0;
+            
         }
 
-        public IActionResult Put(string nome)
-        { return new ; }
-
-        public IActionResult GetAll()
+        public bool Put(Genre genre)
         {
-            return new OkObjectResult(genres);
+            Genre genreExist = genres.Where(X => X.ID == genre.ID).FirstOrDefault();
+            if (genreExist == null)
+                return false;
+
+            genres.Where(X => X.ID == genre.ID).ToList()
+                .ForEach(X =>
+                {
+                    X.Classification = genre.Classification;
+                    X.Description = genre.Description;
+                });
+            return true;
         }
+
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Biblioteca.Api.Domain
 {
-    public class Authors
+    public class Author
     {
         [JsonPropertyName("id_author")]
         public long ID { get; set; }

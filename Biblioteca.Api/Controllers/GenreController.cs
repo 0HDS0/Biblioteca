@@ -21,32 +21,41 @@ namespace Biblioteca.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetByID(long id)
         {
-            return _handler.GetId(id);
+            Genre? genre = _handler.GetID(id);
+
+            if (genre == null) { NotFound("Genero não encontrado!"); }
+
+            return Ok(genre);
         }
 
         [HttpPost]
         [Route("novo")]
         public async Task<IActionResult> PostGenre([FromBody]Genre genre)
         {
-            return _handler.PostGenre(genre);
+
+            if (_handler.PostGenre(genre))
+                return Created($"api/Genre/{genre.ID}", genre);
+
+            return Conflict("Genero já está cadastrado!");
         }
 
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> DeteleByID(long id)
         {
-            return _handler.Delete(id);
+            if (_handler.DeleteByID(id))
+                return Ok();
+            return NotFound("Genero não encontrado");
         }
 
         [HttpPut]
-        [Route("pessoa/atualiza/{nome}")]
-
-        [HttpGet]
-        [Route("all_generos")]
-        public async Task<IActionResult> GetAll()
+        [Route("update")]
+        public async Task<IActionResult> Put([FromBody] Genre genre)
         {
-            return _handler.GetAll();
-        } 
+            if (_handler.Put(genre))
+                return Ok(genre);
+            return NotFound("Autor não encontrado!");
+        }
 
     }
 }

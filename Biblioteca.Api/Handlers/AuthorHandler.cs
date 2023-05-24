@@ -5,30 +5,41 @@ namespace Biblioteca.Api.Handlers
 {
     public class AuthorHandler
     {
-        List<Authors> authors = new List<Authors>();
-        public IActionResult GetByID(long id)
+        public static List<Author> authors = new List<Author>();
+        public Author? GetByID(long id)
         {
-            Authors author = authors.Where(X=>X.ID == id).FirstOrDefault();
-            if (author == null)
-            {
-                return new NotFoundObjectResult("Esse Autor Não Existe!");
-            }
-            return new OkObjectResult(author);
+            return authors.Where(X=>X.ID == id).FirstOrDefault();
         }
-        public IActionResult PostAuthor(Authors author)
+        public bool PostAuthor(Author author)
         {
-            Authors conflict = authors.Where(X => X.ID == author.ID).FirstOrDefault();
-            if (conflict != null)
-            {
-                return new ConflictObjectResult(conflict);
-            }
+            Author conflict = authors.Where(X => X.ID == author.ID).FirstOrDefault();
 
+            if (conflict != null)
+                return false;
+            
             authors.Add(author);
-            return new CreatedResult("","Autor cadastrado com sucesso!");
+            return true;
         }
-        public IActionResult GetAll()
+
+        public bool DeleteByID(long id)
         {
-            return new OkObjectResult(authors);
+            return authors.RemoveAll(X => X.ID == id) > 0;
+        }
+
+        public bool Put(Author author)
+        {
+            Author authorExist = authors.Where(X => X.ID == author.ID).FirstOrDefault();
+            if (authorExist == null)
+                return false;
+
+            authors.Where(X => X.ID == author.ID).ToList()
+                .ForEach(X => 
+                { 
+                    //colocar bibliografia depis caso
+                    X.Name = author.Name;
+                    X.ArtisticName = author.ArtisticName;
+                });
+            return true;
         }
     }
 }
